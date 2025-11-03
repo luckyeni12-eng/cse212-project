@@ -8,12 +8,33 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+            // TODO Problem 1 Start
+        // Plan (step-by-step):
+        // 1. Create a new array of doubles of size 'length'.
+        // 2. For each index i from 0 to length-1:
+        //    - compute the i-th multiple as number * (i + 1) (because the multiples start at number, not 0).
+        //    - store that value into array at index i.
+        // 3. Return the filled array.
+        //
+        // Example: number = 3, length = 5
+        // - result[0] = 3 * (0+1) = 3
+        // - result[1] = 3 * (1+1) = 6
+        // -> returns {3, 6, 9, 12, 15}
 
-        return []; // replace this return statement with your own
+        if (length <= 0)
+        {
+            // defensively return an empty array if length is not positive (assignment says length > 0, but this is safe)
+            return new double[0];
+        }
+
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        return result; // replace this return statement with your own
+        // TODO Problem 1 End
     }
 
     /// <summary>
@@ -25,9 +46,44 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+            // Plan (step-by-step):
+         // Plan (step-by-step):
+        // 1. Validate inputs: if data is null or data.Count == 0 or amount % data.Count == 0, nothing to do.
+        // 2. Normalize amount: since amount will be 1..data.Count per assignment, this step is mostly defensive.
+        //    But we can do amount = amount % data.Count to be safe.
+        // 3. Use list slicing (GetRange) to get the tail (the last 'amount' elements) and the head (the first data.Count - amount elements).
+        // 4. Clear the original list.
+        // 5. AddRange(tail) followed by AddRange(head) so the last 'amount' elements become the front.
+        //
+        // Example: data = {1,2,3,4,5,6,7,8,9}, amount = 3
+        // - tail = GetRange(9 - 3, 3) -> {7,8,9}
+        // - head = GetRange(0, 6) -> {1,2,3,4,5,6}
+        // - result = tail + head -> {7,8,9,1,2,3,4,5,6}
+
+        if (data == null || data.Count == 0)
+        {
+            return;
+        }
+
+        int n = data.Count;
+        // Normalize amount in case caller provides an equivalent rotation (defensive)
+        amount = amount % n;
+        if (amount == 0)
+        {
+            // no rotation needed
+            return;
+        }
+
+        // Get last 'amount' elements
+        List<int> tail = data.GetRange(n - amount, amount);
+        // Get the initial part
+        List<int> head = data.GetRange(0, n - amount);
+
+        // Clear original list and rebuild
+        data.Clear();
+        data.AddRange(tail);
+        data.AddRange(head);
+
+        // TODO Problem 2 End
     }
 }
