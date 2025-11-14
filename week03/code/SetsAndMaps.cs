@@ -21,8 +21,28 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+       // TODO Problem 1 - ADD YOUR CODE HERE
+    var set = new HashSet<string>(words);
+    var results = new List<string>();
+
+    foreach (var w in words)
+{
+    // Skip "aa", "bb", etc. (special case)
+    if (w[0] == w[1])
+        continue;
+
+    var reversed = $"{w[1]}{w[0]}";
+
+    if (set.Contains(reversed))
+    {
+        // Add pair but avoid duplicates
+        results.Add($"{w} & {reversed}");
+        set.Remove(w);
+        set.Remove(reversed);
+    }
+}
+
+return results.ToArray();
     }
 
     /// <summary>
@@ -43,6 +63,12 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3].Trim();
+
+if (degrees.ContainsKey(degree))
+    degrees[degree]++;
+else
+    degrees[degree] = 1;
         }
 
         return degrees;
@@ -67,7 +93,36 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
+        // Normalize: remove spaces and lowercase
+word1 = word1.Replace(" ", "").ToLower();
+word2 = word2.Replace(" ", "").ToLower();
+
+// If lengths differ → not anagram
+if (word1.Length != word2.Length)
+    return false;
+
+// Build dictionary of counts
+var counts = new Dictionary<char, int>();
+
+foreach (var c in word1)
+{
+    if (!counts.ContainsKey(c))
+        counts[c] = 0;
+    counts[c]++;
+}
+
+foreach (var c in word2)
+{
+    if (!counts.ContainsKey(c))
         return false;
+
+    counts[c]--;
+    if (counts[c] < 0)
+        return false;
+}
+
+return true;
+        
     }
 
     /// <summary>
