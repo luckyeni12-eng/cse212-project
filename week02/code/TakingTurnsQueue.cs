@@ -9,6 +9,7 @@
 /// </summary>
 public class TakingTurnsQueue
 {
+    
     private readonly PersonQueue _people = new();
 
     public int Length => _people.Length;
