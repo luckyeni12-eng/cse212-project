@@ -151,11 +151,24 @@ return true;
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
-        // TODO Problem 5:
+       var results = new List<string>();
+
+if (featureCollection?.Features == null)
+{
+    return Array.Empty<string>();
+}
+
+foreach (var f in featureCollection.Features)
+{
+    if (f?.Properties?.Place != null && f.Properties.Mag != null)
+    {
+        results.Add($"{f.Properties.Place} - Mag {f.Properties.Mag}");
+    }
+}
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        return results.ToArray();
     }
 }
